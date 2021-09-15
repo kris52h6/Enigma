@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // UI metoder ...
+        // UI Methods ...
         System.out.println("Welcome to the Enigma machine.");
         System.out.println("Choose which type of cipher  you want.");
 
@@ -58,19 +58,18 @@ public class Main {
             viginereCipherDecode();
 */
         }
-
     }
 
     // NumberCipher
     public static void encryptNumberMenu() {
-        // beder brugeren om plaintext
+        // Asks user for text input
         String plainText = userTextInput();
         System.out.println("You wish to encrypt: " + plainText);
 
-        // kalder numberEncrypt med plaintext
+        // Calls numberEncrypt with the text input from the user
         numberEncrypt(plainText);
 
-        // udskriver ciphertext modtaget fra ovenstående
+        // Prints cipher result
         int[] cipherResult = numberEncrypt(plainText);
         System.out.print("The result of the encryption is: ");
         System.out.println(Arrays.toString(cipherResult));
@@ -84,14 +83,14 @@ public class Main {
     }
 
     public static void decryptNumberMenu() {
-        // beder brugeren om ciphertext
+        // Asks user for text input
         String cipherText = userTextInput();
         System.out.println("You wish to decode: " + cipherText);
 
-        // kalder listOfNumbersToText med ciphertext
+        // Calls numberDecrypt with the input from user
         numberDecrypt(cipherText);
 
-        // udskriver decrypted text
+        // Prints the result of the decoding
         String plainTextResult = numberDecrypt(cipherText);
         System.out.println(plainTextResult);
     }
@@ -103,6 +102,70 @@ public class Main {
         return listDecoded;
     }
 
+
+    // Caesar
+    public static void decryptCaesarMenu() {
+        // Asks for user text input
+        String cipherText = userTextInput();
+        System.out.println("You wish to decode: " + cipherText);
+
+        // Asks for a shift value from the user
+        System.out.println("Please enter a shift value for the decoding");
+        int shiftValue = getShiftValue();
+        shiftValue = - shiftValue;
+
+        // Calls caesarDecrypt with the text input & shift input
+        String decodeResult = caesarDecrypt(cipherText, shiftValue);
+
+        // Prints the result from the decoding
+        System.out.print("The result of the encryption is: ");
+        System.out.println(decodeResult);
+
+    }
+
+    public static String caesarDecrypt(String cipherText, int shiftValue) {
+        // textToListOfNumbers
+        int[] list = textToListOfNumbers(cipherText);
+
+        // shiftListOfNumbers
+        shiftListOfNumbers(list , shiftValue);
+        list = shiftListOfNumbers(list, shiftValue);
+
+        // listOfNumbersToText
+        return listOfNumbersToText(list);
+    }
+
+    public static void encryptCaesarMenu() {
+        // Ask user for text input
+        String plainText = userTextInput();
+        System.out.println("You wish to encrypt: " + plainText);
+
+        // Asks user for shift value
+        System.out.println("Please a shift value for the encryption");
+        int shiftValue = getShiftValue();
+        System.out.printf("You wish to shift it %d time(s)\n", shiftValue);
+
+        // Calls caesarEncrypt with text input and shift value
+        String cipherResult = caesarEncrypt(plainText, shiftValue);
+
+        // Prints the result
+        System.out.println("The result of the encryption is: " + cipherResult);
+    }
+
+    public static String caesarEncrypt(String plainText, int shiftValue) {
+        // textToListOfNumbers
+        int[] list = textToListOfNumbers(plainText);
+
+        // shiftListOfNumbers
+        shiftListOfNumbers(list, shiftValue);
+        list = shiftListOfNumbers(list, shiftValue);
+
+        // listOfNumbersToText
+        return listOfNumbersToText(list);
+    }
+
+
+    // Methods for encoding / decoding
 
     public static String listOfNumbersToText( int[] numbers ) {
         StringBuilder text = new StringBuilder();
@@ -135,56 +198,6 @@ public class Main {
         return alphabet.indexOf(letter);
     }
 
-
-
-    // Caesar
-    public static void decryptCaesarMenu() {
-        // beder brugeren om ciphertext
-        String cipherText = userTextInput();
-        System.out.println("You wish to decode: " + cipherText);
-
-        // beder brugeren om shift-værdi
-        System.out.println("Please enter a shift value for the decoding");
-        int shiftValue = getShiftValue();
-        shiftValue = - shiftValue;
-
-        // kalder caesarDecrypt med ciphertext og shift-værdi
-        String decodeResult = caesarDecrypt(cipherText, shiftValue);
-
-        // udskriver plaintext modtaget fra ovenstående
-        System.out.println("The result of the encryption is: " + decodeResult);
-
-    }
-
-    public static String caesarDecrypt(String cipherText, int shiftValue) {
-        // textToListOfNumbers
-        int[] list = textToListOfNumbers(cipherText);
-
-        // shiftListOfNumbers
-        shiftListOfNumbers(list , shiftValue);
-        list = shiftListOfNumbers(list, shiftValue);
-
-        // listOfNumbersToText
-        return listOfNumbersToText(list);
-    }
-
-    public static void encryptCaesarMenu() {
-        // beder brugeren om plaintext
-        String plainText = userTextInput();
-        System.out.println("You wish to encrypt: " + plainText);
-
-        // beder brugeren om shift-værdi
-        System.out.println("Please a shift value for the encryption");
-        int shiftValue = getShiftValue();
-        System.out.printf("You wish to shift it %d time(s)\n", shiftValue);
-
-        // kalder caesarEncrypt med ciphertext og shift-værdi
-        String cipherResult = caesarEncrypt(plainText, shiftValue);
-
-        // udskriver ciphertext modtaget fra ovenstående
-        System.out.println("The result of the encryption is: " + cipherResult);
-    }
-
     public static int[] shiftListOfNumbers(int[] numbers, int shiftValue) {
         // kald shiftNumber for hvert tal i numbers
         int[] list = new int[numbers.length];
@@ -212,18 +225,6 @@ public class Main {
             shiftedNumber = restOfShiftedNumber;
         }
         return shiftedNumber;
-    }
-
-    public static String caesarEncrypt(String plainText, int shiftValue) {
-        // textToListOfNumbers
-        int[] list = textToListOfNumbers(plainText);
-
-        // shiftListOfNumbers
-        shiftListOfNumbers(list, shiftValue);
-        list = shiftListOfNumbers(list, shiftValue);
-
-        // listOfNumbersToText
-        return listOfNumbersToText(list);
     }
 
     public static String userTextInput() {
